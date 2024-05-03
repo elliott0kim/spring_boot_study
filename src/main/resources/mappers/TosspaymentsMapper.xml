@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="sumichan.sumichan.mapper.client.TosspayMapper">
+
+    <insert id="preOrderMapper" parameterType="list">
+        INSERT INTO TossPayments
+        (OrderId , Amount , Status)
+        VALUES
+        (#{orderId} , #{amount} , #{status})
+    </insert>
+
+    <select id="findPreOrder" parameterType="hashmap" resultType="hashmap">
+        SELECT
+        Amount
+        FROM
+        TossPayments
+        WHERE
+        OrderId=#{orderId}
+    </select>
+
+    <update id="finalOrderMapper" parameterType="hashmap">
+        UPDATE TossPayments
+        SET PaymentKey = #{paymentKey},
+            OrderName = #{orderName},
+            Status = #{status},
+            RequestedAt = #{requestedAt},
+            ApprovedAt = #{approvedAt},
+            ReceiptUrl = #{receipt},
+            Method = #{method},
+            Qty = #{qty},
+            Phone = #{phone},
+            Address = #{address},
+            DeliveryDateTime = #{deliveryDateTime},
+        WHERE OrderId = #{orderId}
+    </update>
+
+    <delete id="orderFailMapper" parameterType="hashmap">
+        DELETE FROM TossPayments
+        WHERE OrderId = #{orderId}
+    </delete>
+
+</mapper>
