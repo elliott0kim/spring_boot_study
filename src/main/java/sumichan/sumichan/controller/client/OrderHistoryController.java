@@ -12,11 +12,11 @@ import java.util.HashMap;
 @RestController
 @Slf4j
 public class OrderHistoryController {
-    @Autowired
-    OrderHistoryService orderHistoryService;
-    @GetMapping("/orderHistory")
-    public HashMap<String, OrderHistoryDto orderHistory()
-    {
-        return orderHistoryService;
-    }
+//    @Autowired
+//    OrderHistoryService orderHistoryService;
+//    @GetMapping("/orderHistory")
+//    public HashMap<String, OrderHistoryDto orderHistory()
+//    {
+//        return orderHistoryService;
+//    }
 }
