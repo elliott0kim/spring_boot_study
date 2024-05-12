@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="sumichan.sumichan.mapper.client.UserInfoMapper">
+
+    <select id="findUserInfoByPhone" parameterType="string" resultType="sumichan.sumichan.dto.client.UserInfoDto">
+        SELECT
+        UserID,
+        Name,
+        PhoneNum
+        FROM
+        User
+        WHERE
+        PhoneNum = #{PhoneNum}
+    </select>
+
+    <select id="findUserInfoById" parameterType="string" resultType="sumichan.sumichan.dto.client.UserInfoDto">
+        SELECT
+        UserID,
+        Name,
+        PhoneNum
+        FROM
+        User
+        WHERE
+        UserId = #{UserID}
+    </select>
+</mapper>
