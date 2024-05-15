@@ -1,4 +1,4 @@
-package sumichan.sumichan.config;
+package sumichan.sumichan.config.message;
 
 import lombok.Getter;
 import lombok.Setter;

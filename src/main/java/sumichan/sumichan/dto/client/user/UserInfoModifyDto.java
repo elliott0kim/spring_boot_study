@@ -1,4 +1,4 @@
-package sumichan.sumichan.dto.client;
+package sumichan.sumichan.dto.client.user;
 
 import lombok.Getter;
 import lombok.Setter;

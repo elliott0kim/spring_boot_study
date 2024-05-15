@@ -1,4 +1,4 @@
-package sumichan.sumichan.config;
+package sumichan.sumichan.config.jwt;
 
 import io.jsonwebtoken.*;
 
@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-import sumichan.sumichan.dto.client.UserInfoDto;
+import sumichan.sumichan.config.message.MessageComponent;
+import sumichan.sumichan.dto.client.user.UserInfoDto;
 import sumichan.sumichan.dto.client.MessageCodeAndResDto;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

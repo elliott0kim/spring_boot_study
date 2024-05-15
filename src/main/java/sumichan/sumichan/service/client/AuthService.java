@@ -1,13 +1,14 @@
 package sumichan.sumichan.service.client;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sumichan.sumichan.config.JwtUtil;
-import sumichan.sumichan.config.MessageComponent;
-import sumichan.sumichan.dto.client.*;
+import sumichan.sumichan.config.jwt.JwtUtil;
+import sumichan.sumichan.config.message.MessageComponent;
+import sumichan.sumichan.dto.client.auth.PhoneAuthDto;
+import sumichan.sumichan.dto.client.auth.RegisterDto;
+import sumichan.sumichan.dto.client.user.UserInfoDto;
 import sumichan.sumichan.mapper.client.UserInfoMapper;
 
 import java.util.HashMap;

@@ -3,7 +3,7 @@
 
 <mapper namespace="sumichan.sumichan.mapper.client.BentoMapper">
 
-    <select id="findBentoList" resultType="sumichan.sumichan.dto.client.BentoResDto">
+    <select id="findBentoList" resultType="sumichan.sumichan.dto.client.Bento.BentoResDto">
         SELECT
         Bento,
         PathURL,
@@ -13,7 +13,7 @@
         Bentos
     </select>
 
-    <select id="findBentoDetail" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.BentoResDto">
+    <select id="findBentoDetail" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.Bento.BentoResDto">
         SELECT
         Bento,
         PathURL,

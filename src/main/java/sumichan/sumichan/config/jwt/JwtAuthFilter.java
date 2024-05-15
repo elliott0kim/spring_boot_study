@@ -1,19 +1,15 @@
-package sumichan.sumichan.config;
+package sumichan.sumichan.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sumichan.sumichan.dto.client.MessageCodeAndResDto;
 import sumichan.sumichan.service.client.AuthService;
-import sumichan.sumichan.service.client.SumichanUserDetailsService;
 
 import java.io.IOException;
 

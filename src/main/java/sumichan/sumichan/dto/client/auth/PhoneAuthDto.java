@@ -1,4 +1,4 @@
-package sumichan.sumichan.dto.client;
+package sumichan.sumichan.dto.client.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

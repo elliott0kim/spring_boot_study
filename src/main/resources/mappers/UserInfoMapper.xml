@@ -3,7 +3,7 @@
 
 <mapper namespace="sumichan.sumichan.mapper.client.UserInfoMapper">
 
-    <select id="findUserInfoByPhone" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.UserInfoDto">
+    <select id="findUserInfoByPhone" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.user.UserInfoDto">
         SELECT
         UserID,
         Name,
@@ -15,7 +15,7 @@
         PhoneNum = #{PhoneNum}
     </select>
 
-    <select id="findUserInfoById" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.UserInfoDto">
+    <select id="findUserInfoById" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.user.UserInfoDto">
         SELECT
         UserID,
         Name,

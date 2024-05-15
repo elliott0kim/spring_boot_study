@@ -3,10 +3,9 @@ package sumichan.sumichan.service.client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sumichan.sumichan.dto.client.BentoResDto;
+import sumichan.sumichan.dto.client.Bento.BentoResDto;
 import sumichan.sumichan.mapper.client.BentoMapper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

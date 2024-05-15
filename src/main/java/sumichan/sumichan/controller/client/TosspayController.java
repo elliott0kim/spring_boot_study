@@ -4,11 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import sumichan.sumichan.config.MessageComponent;
-import sumichan.sumichan.dto.client.FinalOrderDto;
+import sumichan.sumichan.config.message.MessageComponent;
 import sumichan.sumichan.dto.client.MessageCodeAndResDto;
-import sumichan.sumichan.dto.client.OrderFailDto;
-import sumichan.sumichan.dto.client.PreOrderDto;
+import sumichan.sumichan.dto.client.order.PreOrderDto;
 import sumichan.sumichan.service.client.TosspayService;
 
 @RestController

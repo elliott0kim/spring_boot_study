@@ -1,4 +1,4 @@
-package sumichan.sumichan.dto.client;
+package sumichan.sumichan.dto.client.order;
 
 
 public class TosspayResDto {

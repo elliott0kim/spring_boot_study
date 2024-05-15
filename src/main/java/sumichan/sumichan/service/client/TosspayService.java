@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import sumichan.sumichan.config.TosspayConfig;
-import sumichan.sumichan.dto.client.FinalOrderDto;
-import sumichan.sumichan.dto.client.OrderFailDto;
-import sumichan.sumichan.dto.client.PreOrderDto;
+import sumichan.sumichan.dto.client.order.FinalOrderDto;
+import sumichan.sumichan.dto.client.order.OrderFailDto;
+import sumichan.sumichan.dto.client.order.PreOrderDto;
 import sumichan.sumichan.mapper.client.TosspayMapper;
 
 import java.util.HashMap;

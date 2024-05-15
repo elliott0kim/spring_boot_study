@@ -1,8 +1,7 @@
 package sumichan.sumichan.mapper.client;
 
 import org.apache.ibatis.annotations.Mapper;
-import sumichan.sumichan.dto.client.RegisterDto;
-import sumichan.sumichan.dto.client.UserInfoDto;
+import sumichan.sumichan.dto.client.user.UserInfoDto;
 
 import java.util.HashMap;
 @Mapper

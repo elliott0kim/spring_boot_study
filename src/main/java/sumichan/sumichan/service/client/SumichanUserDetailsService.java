@@ -3,12 +3,9 @@ package sumichan.sumichan.service.client;
 
 import lombok.RequiredArgsConstructor;
 //import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sumichan.sumichan.dto.client.UserInfoDto;
+import sumichan.sumichan.dto.client.user.UserInfoDto;
 import sumichan.sumichan.mapper.client.UserInfoMapper;
 
 import java.util.HashMap;

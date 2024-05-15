@@ -3,13 +3,12 @@ package sumichan.sumichan.controller.client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sumichan.sumichan.config.MessageComponent;
-import sumichan.sumichan.dto.client.GetAccessTokenDto;
+import sumichan.sumichan.config.message.MessageComponent;
 import sumichan.sumichan.dto.client.MessageCodeAndResDto;
-import sumichan.sumichan.dto.client.UserInfoDto;
-import sumichan.sumichan.dto.client.UserInfoModifyDto;
+import sumichan.sumichan.dto.client.user.UserInfoDto;
+import sumichan.sumichan.dto.client.user.UserInfoModifyDto;
 import sumichan.sumichan.service.client.AuthService;
-import sumichan.sumichan.config.JwtUtil;
+import sumichan.sumichan.config.jwt.JwtUtil;
 
 @RestController
 @Slf4j

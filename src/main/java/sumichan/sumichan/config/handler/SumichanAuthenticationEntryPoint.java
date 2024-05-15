@@ -1,5 +1,4 @@
-package sumichan.sumichan.config;
-import com.fasterxml.jackson.core.JsonProcessingException;
+package sumichan.sumichan.config.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.ServletException;
@@ -9,12 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import sumichan.sumichan.dto.client.ErrorResponseDto;
+import sumichan.sumichan.dto.client.auth.ErrorResponseDto;
 
 import java.time.LocalDateTime;
 

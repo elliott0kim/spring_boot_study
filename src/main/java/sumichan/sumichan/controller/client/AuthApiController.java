@@ -2,12 +2,13 @@ package sumichan.sumichan.controller.client;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sumichan.sumichan.config.JwtUtil;
-import sumichan.sumichan.config.MessageComponent;
+import sumichan.sumichan.config.jwt.JwtUtil;
+import sumichan.sumichan.config.message.MessageComponent;
 import sumichan.sumichan.dto.client.*;
+import sumichan.sumichan.dto.client.auth.*;
+import sumichan.sumichan.dto.client.user.UserInfoDto;
 import sumichan.sumichan.service.client.AuthService;
 
 @RestController
