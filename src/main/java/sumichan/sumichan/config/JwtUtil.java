@@ -4,10 +4,11 @@ import io.jsonwebtoken.*;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 import sumichan.sumichan.dto.client.UserInfoDto;
-
+import sumichan.sumichan.dto.client.MessageCodeAndResDto;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -21,13 +22,22 @@ public class JwtUtil {
     private final SecretKey key;
     private final long accessTokenExpTime;
 
+    private final long refreshTokenExpTime;
+
+    @Autowired
+    private MessageComponent messageComponent;
+
+    @Autowired
+    private MessageCodeAndResDto messageCodeAndResDto;
+
     public JwtUtil(@Value("${jwt.private_secret_key}") String secretKey,
-                   @Value("${jwt.expiration_time}") long accessTokenExpTime)
+                   @Value("${jwt.expiration_time_ten_min}") long accessTokenExpTime,
+                   @Value("${jwt.expiration_time_one_year}") long refreshTokenExpTime)
     {
         byte[] keyBytes = Base64.getDecoder().decode(secretKey);
         key = new SecretKeySpec(keyBytes, "HmacSHA256");
-
         this.accessTokenExpTime = accessTokenExpTime;
+        this.refreshTokenExpTime = refreshTokenExpTime;
     }
 
     /**
@@ -35,8 +45,14 @@ public class JwtUtil {
      * @param userInfoDto
      * @return Access Token String
      */
-    public String createAccessToken(UserInfoDto userInfoDto) {
+    public String createAccessToken(UserInfoDto userInfoDto)
+    {
         return createToken(userInfoDto, accessTokenExpTime);
+    }
+
+    public String createRefreshToken(UserInfoDto userInfoDto)
+    {
+        return createToken(userInfoDto, refreshTokenExpTime);
     }
 
 
@@ -46,7 +62,8 @@ public class JwtUtil {
      * @param expireTime
      * @return JWT String
      */
-    private String createToken(UserInfoDto userInfoDto, long expireTime) {
+    private String createToken(UserInfoDto userInfoDto, long expireTime)
+    {
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
         return Jwts.builder()
@@ -64,8 +81,9 @@ public class JwtUtil {
      * @param token
      * @return User ID
      */
-    public String getUserId(String token) {
-        return parseSub(token).get("userId", String.class);
+    public String getUserId(String token)
+    {
+        return parseSub(token).get("sub", String.class);
     }
 
 
@@ -74,24 +92,46 @@ public class JwtUtil {
      * @param token
      * @return IsValidate
      */
-    public boolean validateToken(String token) {
+    public String validateToken(String token)
+    {
         try {
-            Jwts.parser()
+            Jws<Claims> header = Jwts.parser()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-            return true;
+//            Date exp = header.getPayload().getExpiration();
+//            Date iat = header.getPayload().getIssuedAt();
+//            if (exp.compareTo(iat) == -1)
+//            {
+//
+//            }
 
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            System.out.println(Jwts.parser()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token));
+            return messageComponent.getSUCCESS();
         }
-        return false;
+        catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e)
+        {
+            log.info("Invalid JWT Token", e);
+            throw new RuntimeException(messageComponent.getINVAILD_ACCESS());
+        }
+        catch (ExpiredJwtException e)
+        {
+            log.info("Expired JWT Token", e);
+            throw new RuntimeException(messageComponent.getEXPIRED_TOKEN());
+        }
+        catch (UnsupportedJwtException e)
+        {
+            log.info("Unsupported JWT Token", e);
+            throw new RuntimeException(messageComponent.getINVAILD_ACCESS());
+        }
+        catch (IllegalArgumentException e)
+        {
+            log.info("JWT claims string is empty.", e);
+            throw new RuntimeException(messageComponent.getINVAILD_ACCESS());
+        }
     }
 
 
@@ -100,7 +140,8 @@ public class JwtUtil {
      * @param accessToken
      * @return JWT Claims
      */
-    public Claims parseSub(String accessToken) {
+    public Claims parseSub(String accessToken)
+    {
         try {
             return Jwts.parser().
                     setSigningKey(key).

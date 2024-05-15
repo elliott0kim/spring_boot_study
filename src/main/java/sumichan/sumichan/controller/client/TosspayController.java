@@ -22,13 +22,17 @@ public class TosspayController {
     private MessageCodeAndResDto response;
 
     @PostMapping("/preOrder")
-    public MessageCodeAndResDto preOrder(@RequestBody PreOrderDto preOrder) {
+    public MessageCodeAndResDto preOrder(@RequestBody PreOrderDto preOrder)
+    {
         boolean retService = tosspayService.preOrderService(preOrder);
-        if (retService) {
+        if (retService)
+        {
             response.setMessage(messageComponent.getSUCCESS());
             response.setData(null);
             return response;
-        } else {
+        }
+        else
+        {
             response.setMessage(messageComponent.getFAIL());
             response.setData(null);
             return response;

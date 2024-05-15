@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sumichan.sumichan.dto.client.UserInfoDto;
 import sumichan.sumichan.mapper.client.UserInfoMapper;
 
+import java.util.HashMap;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -20,7 +22,9 @@ public class SumichanUserDetailsService {
 
     public boolean loadUserById(String id)
     {
-        UserInfoDto userInfoDto = userInfoMapper.findUserInfoByPhone(id);
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("UserID", id);
+        UserInfoDto userInfoDto = userInfoMapper.findUserInfoById(paramMap);
         if (userInfoDto == null)
         {
             return false;

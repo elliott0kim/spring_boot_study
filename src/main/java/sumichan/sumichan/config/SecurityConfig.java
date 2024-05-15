@@ -1,6 +1,7 @@
 package sumichan.sumichan.config;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -19,15 +20,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @AllArgsConstructor
+@Getter
 public class SecurityConfig  {
-    //private final SumichanUserDetailsService sumichanUserDetailsService;
     private final JwtUtil jwtUtil;
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
     private static final String[] AUTH_WHITELIST = {
             "/api/v1/member/**", "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
-            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/api/v1/auth/**"
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/api/v1/auth/**",
+            "/auth/**", "/bento/**", "/preOrder", "/user"
     };
 
     @Bean
@@ -44,22 +46,14 @@ public class SecurityConfig  {
         http.formLogin((form) -> form.disable());
         http.httpBasic(AbstractHttpConfigurer::disable);
 
-
-//        //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-//        http.addFilterBefore(new JwtAuthFilter(sumichanUserDetailsService, jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling((exceptionHandling) -> exceptionHandling
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
         );
+        http.authorizeRequests().requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated();
 
-        // 권한 규칙 작성
-        http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                        //@PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
-                        .anyRequest().permitAll()
-//                        .anyRequest().authenticated()
-        );
-
+//        //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
+        //http.addFilterBefore(new JwtAuthFilter(sumichanUserDetailsService, jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

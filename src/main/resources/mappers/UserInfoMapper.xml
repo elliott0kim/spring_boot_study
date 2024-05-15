@@ -3,25 +3,40 @@
 
 <mapper namespace="sumichan.sumichan.mapper.client.UserInfoMapper">
 
-    <select id="findUserInfoByPhone" parameterType="string" resultType="sumichan.sumichan.dto.client.UserInfoDto">
+    <select id="findUserInfoByPhone" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.UserInfoDto">
         SELECT
         UserID,
         Name,
-        PhoneNum
+        PhoneNum,
+        Address
         FROM
         User
         WHERE
         PhoneNum = #{PhoneNum}
     </select>
 
-    <select id="findUserInfoById" parameterType="string" resultType="sumichan.sumichan.dto.client.UserInfoDto">
+    <select id="findUserInfoById" parameterType="hashmap" resultType="sumichan.sumichan.dto.client.UserInfoDto">
         SELECT
         UserID,
         Name,
-        PhoneNum
+        PhoneNum,
+        Address
         FROM
         User
         WHERE
         UserId = #{UserID}
     </select>
+
+    <insert id="registerUserInfo" parameterType="hashmap">
+        INSERT INTO User
+        (Name, PhoneNum, Address)
+        VALUES
+        (#{Name}, #{PhoneNum}, #{Address})
+    </insert>
+
+    <update id="modifyUserInfo" parameterType="hashmap">
+        UPDATE User
+        SET PhoneNum = #{PhoneNum}, Address = #{Address}
+        WHERE UserID = #{UserID}
+    </update>
 </mapper>

@@ -1,20 +1,28 @@
 package sumichan.sumichan.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import sumichan.sumichan.dto.client.MessageCodeAndResDto;
+import sumichan.sumichan.service.client.AuthService;
 import sumichan.sumichan.service.client.SumichanUserDetailsService;
 
 import java.io.IOException;
 
+@Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilter -> 한 번 실행 보장
 
-    private final SumichanUserDetailsService sumichanUserDetailsService;
     private final JwtUtil jwtUtil;
+    private final AuthService authService;
 
     @Override
     /**
@@ -24,41 +32,58 @@ public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilte
     {
         String authorizationHeader = request.getHeader("Authorization");
 
+        response.setContentType("applcation/json");
+        response.setCharacterEncoding("UTF-8");
+        MessageCodeAndResDto messageCodeAndResDto = new MessageCodeAndResDto();
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonRes;
+
         //JWT가 헤더에 있는 경우
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer "))
         {
             String token = authorizationHeader.substring(7);
             //JWT 유효성 검증
-            if (jwtUtil.validateToken(token))
+            try
             {
-                String userId = jwtUtil.getUserId(token);
-
-                //유저와 토큰 일치 시 userDetails 생성
-                boolean findUser = sumichanUserDetailsService.loadUserById(userId);
-
-                if (findUser == true)
-                {
-                    //UserDetsils, Password, Role -> 접근권한 인증 Token 생성
-//                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//
-//                    //현재 Request의 Security Context에 접근권한 설정
-//                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }
-                else
-                {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "회원정보 미존재");
-                }
+                jwtUtil.validateToken(token);
             }
-            else
+            catch (Exception e)
             {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+                messageCodeAndResDto.setMessage(e.getMessage());
+                messageCodeAndResDto.setData(null);
+                jsonRes = mapper.writeValueAsString(messageCodeAndResDto);
+                response.setStatus(419);
+                response.getWriter().write(jsonRes);
+                return;
+            }
+
+
+            String userId = jwtUtil.getUserId(token);
+            try
+            {
+                authService.checkExistUserById(userId);
+            }
+            catch (Exception e)
+            {
+                messageCodeAndResDto.setMessage(e.getMessage());
+                messageCodeAndResDto.setData(null);
+                jsonRes = mapper.writeValueAsString(messageCodeAndResDto);
+                response.setStatus(400);
+                response.getWriter().write(jsonRes);
+                return;
             }
         }
         else
         {
-            // JWT 헤더가 없는 경우 예외처리. 내가 Message.json 에다가 넣어주는게 좋을 듯?
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization Header가 필요합니다.");
+            String a = request.getRequestURI();
+
+            if (!request.getRequestURI().matches("^/auth/.*")
+                    && !request.getRequestURI().matches("^/swagger.*")
+                    && !request.getRequestURI().matches("/v3.*")
+                    && !request.getRequestURI().matches("^/api.*"))
+            {
+                return;
+            }
         }
 
         filterChain.doFilter(request, response); // 다음 필터로 넘기기
